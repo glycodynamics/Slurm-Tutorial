@@ -1,4 +1,4 @@
-## SLUM basics
+## SLURM basics
 ### Demons
 ```
 sudo systemctl  restart slurmctld
