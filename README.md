@@ -44,6 +44,70 @@ Note: Chnage node status to resume
 
 
 
+## General SLURM commands 
+
+### Submitting jobs
+```
+#!/bin/bash
+#SBATCH -p shared # partition (queue)
+#SBATCH -c 1 # number of cores
+#SBATCH --mem 100 # memory pool for all cores
+#SBATCH -t 0-2:00 # time (D-HH:MM)
+#SBATCH -o slurm.%N.%j.out # STDOUT
+#SBATCH -e slurm.%N.%j.err # STDERR
+for i in {1..100000}; do
+echo $RANDOM >> SomeRandomNumbers.txt
+donesort SomeRandomNumbers.txt
+
+Now you can submit your job with the command:
+
+sbatch myscript.sh
+```
+### Job Information
+
+List all current jobs for a user:
+```squeue -u <username>```
+
+List all running jobs for a user:
+```squeue -u <username> -t RUNNING```
+
+List all pending jobs for a user:
+```squeue -u <username> -t PENDING```
+
+List priority order of jobs for the current user (you) in a given partition:
+```showq-slurm -o -u -q <partition>```
+
+List detailed information for a job (useful for troubleshooting):
+```scontrol show jobid -dd <jobid>```
+
+### Job Control
+
+
+To cancel one job:
+```scancel <jobid>```
+
+To cancel all the jobs for a user:
+```scancel -u <username>```
+
+To cancel all the pending jobs for a user:
+```scancel -t PENDING -u <username>```
+
+To hold a particular job from being scheduled:
+```scontrol hold <jobid>```
+
+To requeue (cancel and rerun) a particular job:
+```scontrol requeue <jobid>```
+
+To release a particular job to be scheduled:
+```scontrol release <jobid>```
+
+To hold a all the job from being scheduled:
+```squeue --user $USER -t PENDING --format "scontrol hold %i" | tail -n +2 | bash```
+
+
+
+To release a all the held jobs to be scheduled:
+```squeue --user $USER -t PENDING --format "scontrol release %i" | tail -n +2 | bash```
 
 
 
