@@ -120,3 +120,7 @@ To print all the jobs by user starting from date 2022-12-31:
 ```sreport --parsable cluster Utilization Start=2022-04-1```
 
 
+
+### Mounted Drive
+Mount drive as below if you want to submit a job in sshfs mounted drive:
+```sshfs user@ole.ms.du:/data/user/ /home/user/mount_gag -o uid=$(id -u),gid=$(id -g),allow_other```
