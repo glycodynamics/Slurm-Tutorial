@@ -117,3 +117,6 @@ To print all the jobs by user starting from date 2022-12-31:
 ```sacct -S2022-12-31 -u sushil -ojobid,start,end,alloccpu,cputime | column -t```
 
 
+```sreport --parsable cluster Utilization Start=2022-04-1```
+
+
