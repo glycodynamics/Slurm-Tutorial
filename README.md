@@ -15,12 +15,12 @@ sudo scontrol update nodename=fucose state=resume reason=cg
 
 ```
 
-Make sure the file folowing two files have read and write permission to user slurm:
+Make sure the following two files have read and write permission for user slurm:
 ```
 sudo chmod 666 /var/log/slurm/slurmctld.log
 sudo chmod 666 /var/log/slurm/slurmd.log
 ```
-####Placing a hold on a queued job
+#### Placing a hold on a queued job
 If you want to prevent a job from running but leave it in the queue, you can place a hold on it using the scontrol hold command. The job will remain pending until you release it with the scontrol release command. A hold can be useful if you need to modify the input file for a job without losing your place in the queue.
 
 Examples:
@@ -38,11 +38,15 @@ sudo systemctl status munge.service
 munge -n | unmunge
 
 
-Note: Chnage node status to resume
+Note: Change node status to resume
 
 ```
-
-
+#### Steps needed after rebooting the machine (GAG):
+```
+sudo systemctl  start slurmctld
+sudo scontrol update nodename=gag state=down reason=cg
+sudo scontrol update nodename=gag state=resume reason=cg
+```
 
 ## General SLURM commands 
 
