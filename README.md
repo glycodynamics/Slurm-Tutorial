@@ -116,6 +116,8 @@ To release a all the held jobs to be scheduled:
 
 ### Slurm ADMIN ##
 ```sacctmgr show association where user=username```
+
+
 ```sacctmgr create user name=username account=nonglyco```
 
 
