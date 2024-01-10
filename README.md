@@ -114,6 +114,10 @@ To release a all the held jobs to be scheduled:
 ```squeue --user $USER -t PENDING --format "scontrol release %i" | tail -n +2 | bash```
 
 
+### Slurm ADMIN ##
+```sacctmgr show association where user=username```
+```sacctmgr create user name=username account=nonglyco```
+
 
 ### Reports
 
