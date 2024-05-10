@@ -10,14 +10,41 @@
 #SBATCH -t 0-2:00 # time (D-HH:MM)
 #SBATCH -o slurm.%N.%j.out # STDOUT
 #SBATCH -e slurm.%N.%j.err # STDERR
+
 for i in {1..100000}; do
 echo $RANDOM >> SomeRandomNumbers.txt
-donesort SomeRandomNumbers.txt
-
+done
+sort SomeRandomNumbers.txt
 Now you can submit your job with the command:
 
 sbatch myscript.sh
 ```
+### Requesting resources for interactive session
+
+If you specifically want to request an interactive job, you can use the 'srun' option with the appropriate syntax, such as:
+
+```
+srun -N1 -c2 --gres=gpu:RTX3080:1 --mem=10GB --time=2-12:30:15 --pty /bin/bash
+```
+This command will allocate resources for your job with 2 processors, 1 RTX3080 GPU, 10GB of memory, and 2 days 12 hours 30 min, and 15 seconds of time  time.
+
+Explanation:
+- `-N1`: Requests one node. Do not request more than one node at the moment. 
+- `-c2`: Requests 2 processors (CPU cores) for your job. Use -c4 -c8 ect for 4 and 8 CPUs. 
+- `--gres=gpu:RTX3080:1`: Requests 1 RTX3080 GPU for your job. We have three kinds of GPUs, RTX3080, A5000 and A5000ADA. To request two A5000, write `--gres=gpu:A5000:2`
+- `--mem=10GB`: Specifies the memory requirement for your job to be 10GB.
+- `--time=2-12:30:15`: Requests two days,12 hours 30 min and 15 seconds (Format: D-HH:MM:SS; Default is 24h)
+- `--pty /bin/bash`: Opens a bash shell on the allocated resources, allowing you to interact with the node.
+
+```
+run --pty /bin/bash  # gives you 1 processor for 24 hours!
+srun --gres=gpu:1 --pty /bin/bash ## gives you 1 CPU and 1GPU for 24 hours!
+srun -c12 --gres=gpu:1 --pty /bin/bash ## gives you 12 CPUs and 1 GPU for 24 hours!
+
+```
+
+
+
 ### Job Information
 
 List all current jobs for a user:
