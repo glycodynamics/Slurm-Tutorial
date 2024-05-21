@@ -136,6 +136,61 @@ munge -n | unmunge
 Note: Change node status to resume
 
 ```
+#### Enable accounting
+```
+yum install mariadb mariadb-server -y
+systemctl enable mariadb.service
+mysql_install_db
+systemctl start mariadb
+systemctl status mariadb
+systemctl start mariadb
+
+# if it doesn't works:
+
+journalctl -xeu mariadb.service
+cd /var/log/
+less messages
+cd mariadb/
+less mariadb.log
+cat /etc/passwd
+cd /var/lib/
+chown -R mysql.mysql mysql
+systemctl start mariadb
+systemctl status mariadb.service
+mysql -u root -e "create user 'slurm'@'localhost' identified by 'Amber_2024'; grant all on slurm_acct_db.* TO 'slurm'@'localhost'; create database slurm_acct_db;"
+systemctl stop slurmctld.service
+cd /etc/slurm/
+cp slurm.conf slurm.conf.orig
+vi slurm.conf
+vi slurmdbd.conf
+id slurm
+cat /etc/passwd
+vi slurmdbd.conf
+touch /var/log/slurmdbd.log
+ls -la /var/log/slurm/slurmctld.log
+systemctl restart munge
+systemctl stop slurmctld.service
+systemctl restart slurmdbd.service
+systemctl start slurmctld.service
+systemctl status slurmdbd.service
+systemctl status slurmctld.service
+
+clush -g compute -c slurm.conf --dest /etc/slurm/
+clush -g compute -c slurmdbd.conf --dest /etc/slurm/
+clush -g compute systemctl restart slurmd
+
+
+```
+
+
+
+#### Editing slurm.conf and copying it to all compute nodes
+```
+clush -g compute systemctl restart slurmd
+```
+
+
+
 #### Steps needed after rebooting the machine (GAG):
 ```
 sudo systemctl  start slurmctld
